@@ -1,0 +1,388 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Cinemax Studios</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="logo-container">
+                <i class="fas fa-film"></i>
+            </div>
+            <h1>CINEMAX</h1>
+            <p>STUDIOS</p>
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="hidden">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-film"></i>
+                    <span>CINEMAX</span>
+                </div>
+                <button class="menu-btn" id="menuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Side Menu -->
+        <div class="side-menu" id="sideMenu">
+            <div class="menu-header">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3>Production Crew</h3>
+                        <p>Cinemax Studios</p>
+                    </div>
+                </div>
+                <button class="close-menu" id="closeMenu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="menu-nav">
+                <a href="#" class="menu-item active" data-page="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="menu-item" data-page="projects">
+                    <i class="fas fa-video"></i>
+                    <span>Projects</span>
+                </a>
+                <a href="#" class="menu-item" data-page="tasks">
+                    <i class="fas fa-tasks"></i>
+                    <span>Workflows</span>
+                </a>
+                <a href="#" class="menu-item" data-page="notepad">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>Notepad</span>
+                </a>
+                <a href="#" class="menu-item" data-page="crew">
+                    <i class="fas fa-users"></i>
+                    <span>Crew</span>
+                </a>
+            </nav>
+        </div>
+        <div class="menu-overlay" id="menuOverlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <section class="page active" id="dashboard">
+                <div class="page-header">
+                    <h1>Dashboard</h1>
+                    <p>Welcome back, Crew!</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon projects">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalProjects">0</h3>
+                            <p>Projects</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon tasks">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pendingTasks">0</h3>
+                            <p>Pending Tasks</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon crew">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalCrew">0</h3>
+                            <p>Crew Members</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon notes">
+                            <i class="fas fa-sticky-note"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalNotes">0</h3>
+                            <p>Notes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h2>Active Projects</h2>
+                </div>
+                <div class="projects-list" id="activeProjectsList"></div>
+
+                <div class="section-header">
+                    <h2>Recent Tasks</h2>
+                </div>
+                <div class="tasks-list" id="recentTasksList"></div>
+            </section>
+
+            <!-- Projects Page -->
+            <section class="page" id="projects">
+                <div class="page-header">
+                    <h1>Projects</h1>
+                    <button class="add-btn" id="addProjectBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">All</button>
+                    <button class="filter-tab" data-filter="Pre-Production">Pre-Prod</button>
+                    <button class="filter-tab" data-filter="Production">Production</button>
+                    <button class="filter-tab" data-filter="Post-Production">Post-Prod</button>
+                    <button class="filter-tab" data-filter="Completed">Completed</button>
+                </div>
+
+                <div class="projects-grid" id="projectsGrid"></div>
+            </section>
+
+            <!-- Tasks/Workflows Page -->
+            <section class="page" id="tasks">
+                <div class="page-header">
+                    <h1>Workflows</h1>
+                    <button class="add-btn" id="addTaskBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+
+                <div class="project-selector">
+                    <select id="taskProjectFilter">
+                        <option value="">All Projects</option>
+                    </select>
+                </div>
+
+                <div class="tasks-container" id="tasksContainer"></div>
+            </section>
+
+            <!-- Notepad Page -->
+            <section class="page" id="notepad">
+                <div class="page-header">
+                    <h1>Notepad</h1>
+                    <button class="add-btn" id="addNoteBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+
+                <div class="project-selector">
+                    <select id="noteProjectFilter">
+                        <option value="">General Notes</option>
+                    </select>
+                </div>
+
+                <div class="notepad-container" id="notepadContainer"></div>
+            </section>
+
+            <!-- Crew Page -->
+            <section class="page" id="crew">
+                <div class="page-header">
+                    <h1>Crew</h1>
+                    <button class="add-btn" id="addCrewBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+
+                <div class="crew-grid" id="crewGrid"></div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item" data-page="projects">
+                <i class="fas fa-video"></i>
+                <span>Projects</span>
+            </a>
+            <a href="#" class="nav-item" data-page="tasks">
+                <i class="fas fa-tasks"></i>
+                <span>Tasks</span>
+            </a>
+            <a href="#" class="nav-item" data-page="notepad">
+                <i class="fas fa-sticky-note"></i>
+                <span>Notes</span>
+            </a>
+            <a href="#" class="nav-item" data-page="crew">
+                <i class="fas fa-users"></i>
+                <span>Crew</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Project Modal -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="projectModalTitle">Add Project</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="projectForm">
+                <input type="hidden" id="projectId">
+                <div class="form-group">
+                    <label>Project Name</label>
+                    <input type="text" id="projectName" required placeholder="Enter project name">
+                </div>
+                <div class="form-group">
+                    <label>Director</label>
+                    <input type="text" id="projectDirector" required placeholder="Director name">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="projectStatus">
+                        <option value="Pre-Production">Pre-Production</option>
+                        <option value="Production">Production</option>
+                        <option value="Post-Production">Post-Production</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input type="date" id="projectStartDate">
+                </div>
+                <div class="form-group">
+                    <label>End Date</label>
+                    <input type="date" id="projectEndDate">
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save"></i> Save Project
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="taskModalTitle">Add Task</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="taskForm">
+                <input type="hidden" id="taskId">
+                <div class="form-group">
+                    <label>Project</label>
+                    <select id="taskProject" required>
+                        <option value="">Select Project</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Task Name</label>
+                    <input type="text" id="taskName" required placeholder="Enter task name">
+                </div>
+                <div class="form-group">
+                    <label>Assigned To</label>
+                    <select id="taskAssignedTo">
+                        <option value="">Select Crew Member</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Due Date</label>
+                    <input type="date" id="taskDueDate">
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save"></i> Save Task
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Note Modal -->
+    <div class="modal" id="noteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Note</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="noteForm">
+                <div class="form-group">
+                    <label>Project (Optional)</label>
+                    <select id="noteProject">
+                        <option value="">General Note</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Note</label>
+                    <textarea id="noteContent" required placeholder="Write your note here..." rows="4"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save"></i> Save Note
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Crew Modal -->
+    <div class="modal" id="crewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Crew Member</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="crewForm">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="crewName" required placeholder="Full name">
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="crewRole">
+                        <option value="Director">Director</option>
+                        <option value="Producer">Producer</option>
+                        <option value="Cinematographer">Cinematographer</option>
+                        <option value="Editor">Editor</option>
+                        <option value="Sound Designer">Sound Designer</option>
+                        <option value="Writer">Writer</option>
+                        <option value="Actor">Actor</option>
+                        <option value="Production Assistant">Production Assistant</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="crewPhone" placeholder="Phone number">
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save"></i> Save
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
