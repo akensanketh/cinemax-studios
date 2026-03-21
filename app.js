@@ -813,8 +813,18 @@ function openMaps(link) { window.open(link, '_blank'); }
 // ============ CHAT SYSTEM ============
 async function loadChatRooms() {
     if (!currentUser) return;
-    const result = await apiCall('getChatRooms', { username: currentUser.Username });
-    if (result.success) { chatRooms = result.data || []; renderChatRooms(); updateChatBadges(); }
+    
+    try {
+        const result = await apiCall('getChatRooms', { username: currentUser.Username });
+        
+        if (result.success) {
+            chatRooms = result.data || [];
+            renderChatRooms();
+            updateChatBadges();
+        }
+    } catch (error) {
+        console.log('Error loading chat rooms:', error);
+    }
 }
 
 function renderChatRooms() {
@@ -867,59 +877,158 @@ async function openChatRoom(roomId) {
     document.getElementById('chatRoomStatus').textContent = isGroup ? (room.Members || '').split(',').length + ' members' : 'Online';
     document.getElementById('chatRoomAvatar').innerHTML = isGroup ? '<i class="fas fa-users"></i>' : getInitials(displayName);
 
+    // Clear old messages first
+    currentMessages = [];
+    document.getElementById('chatMessages').innerHTML = '<div class="loading-messages"><i class="fas fa-spinner fa-spin"></i> Loading messages...</div>';
+    
+    // Load messages immediately
     await loadMessages(roomId);
-    chatRefreshInterval = setInterval(() => loadMessages(roomId), 3000);
+    
+    // Clear any existing interval
+    if (chatRefreshInterval) {
+        clearInterval(chatRefreshInterval);
+    }
+    
+    // Refresh every 1 second for real-time updates
+    chatRefreshInterval = setInterval(() => {
+        loadMessages(roomId);
+    }, 1000);
 }
 
 function closeChatRoom() {
+    // Stop refreshing messages
+    if (chatRefreshInterval) {
+        clearInterval(chatRefreshInterval);
+        chatRefreshInterval = null;
+    }
+    
     currentRoomId = null;
+    currentMessages = [];
+    
     document.getElementById('chatListView').classList.remove('hidden');
     document.getElementById('chatRoomView').classList.add('hidden');
     document.getElementById('bottomNav').style.display = '';
     document.querySelector('.app-header').style.display = '';
-    if (chatRefreshInterval) { clearInterval(chatRefreshInterval); chatRefreshInterval = null; }
+    
+    // Refresh chat rooms list
     loadChatRooms();
 }
 
 async function loadMessages(roomId) {
-    if (!currentUser) return;
-    const result = await apiCall('getMessages', { roomId, username: currentUser.Username });
-    if (result.success) {
-        const newMsgs = result.data || [];
-        if (JSON.stringify(newMsgs) !== JSON.stringify(currentMessages)) {
-            currentMessages = newMsgs;
-            renderMessages();
+    if (!currentUser || !roomId) return;
+    
+    try {
+        const result = await apiCall('getMessages', { roomId: roomId, username: currentUser.Username });
+        
+        if (result.success) {
+            const newMsgs = result.data || [];
+            
+            // Check if messages changed
+            const newMsgsStr = JSON.stringify(newMsgs);
+            const oldMsgsStr = JSON.stringify(currentMessages);
+            
+            if (newMsgsStr !== oldMsgsStr) {
+                currentMessages = newMsgs;
+                renderMessages();
+                
+                // Auto-scroll to bottom on new messages
+                const container = document.getElementById('chatMessages');
+                container.scrollTop = container.scrollHeight;
+            }
+        } else {
+            console.log('Error loading messages:', result.error);
         }
+    } catch (error) {
+        console.log('Message load error:', error);
     }
 }
 
 function renderMessages() {
     const container = document.getElementById('chatMessages');
+    
+    if (!currentMessages || currentMessages.length === 0) {
+        container.innerHTML = '<div class="empty-state" style="padding-top:100px"><i class="fas fa-comments"></i><h3>No messages yet</h3><p>Say hello! 👋</p></div>';
+        return;
+    }
+    
     let html = '';
     let lastDate = '';
 
     currentMessages.forEach(msg => {
-        const msgDate = new Date(msg.Timestamp).toLocaleDateString();
+        // Date separator
+        let msgDate;
+        try {
+            msgDate = new Date(msg.Timestamp).toLocaleDateString();
+        } catch {
+            msgDate = 'Unknown';
+        }
+        
         if (msgDate !== lastDate) {
             lastDate = msgDate;
-            html += '<div class="message-date"><span>' + (msgDate === new Date().toLocaleDateString() ? 'Today' : formatDate(msg.Timestamp)) + '</span></div>';
+            const isToday = msgDate === new Date().toLocaleDateString();
+            const isYesterday = msgDate === new Date(Date.now() - 86400000).toLocaleDateString();
+            let dateLabel = msgDate;
+            if (isToday) dateLabel = 'Today';
+            if (isYesterday) dateLabel = 'Yesterday';
+            html += '<div class="message-date"><span>' + dateLabel + '</span></div>';
         }
+
         const isSent = msg.SenderName === currentUser.Username;
-        const time = new Date(msg.Timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        html += '<div class="message ' + (isSent ? 'sent' : 'received') + '">' + (!isSent ? '<div class="sender">' + esc(msg.SenderName) + '</div>' : '') + '<div class="text">' + esc(msg.Message) + '</div><div class="time">' + time + '</div></div>';
+        let time;
+        try {
+            time = new Date(msg.Timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        } catch {
+            time = '';
+        }
+
+        html += '<div class="message ' + (isSent ? 'sent' : 'received') + '">';
+        if (!isSent) {
+            html += '<div class="sender">' + esc(msg.SenderName) + '</div>';
+        }
+        html += '<div class="text">' + esc(msg.Message) + '</div>';
+        html += '<div class="time">' + time + '</div>';
+        html += '</div>';
     });
 
-    container.innerHTML = html || '<div class="empty-state" style="padding-top:100px"><i class="fas fa-comments"></i><h3>No messages yet</h3><p>Say hello!</p></div>';
+    container.innerHTML = html;
     container.scrollTop = container.scrollHeight;
 }
 
 async function sendChatMessage() {
     const input = document.getElementById('chatInput');
     const message = input.value.trim();
+    
     if (!message || !currentRoomId || !currentUser) return;
+    
+    // Clear input immediately for better UX
     input.value = '';
-    const r = await apiCall('sendMessage', { roomId: currentRoomId, senderName: currentUser.Username, message });
-    if (r.success) await loadMessages(currentRoomId);
+    
+    // Disable send button temporarily
+    const sendBtn = document.getElementById('sendMessageBtn');
+    sendBtn.disabled = true;
+    
+    try {
+        const result = await apiCall('sendMessage', { 
+            roomId: currentRoomId, 
+            senderName: currentUser.Username, 
+            message: message 
+        });
+        
+        if (result.success) {
+            // Load messages immediately after sending
+            await loadMessages(currentRoomId);
+        } else {
+            showToast('Failed to send message', true);
+            // Put message back if failed
+            input.value = message;
+        }
+    } catch (error) {
+        showToast('Error sending message', true);
+        input.value = message;
+    }
+    
+    sendBtn.disabled = false;
+    input.focus();
 }
 
 // New chat functions
