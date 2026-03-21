@@ -12,8 +12,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <div class="login-content">
+            <div class="logo-container">
+                <i class="fas fa-film"></i>
+            </div>
+            <h1>CINEMAX</h1>
+            <p class="subtitle">STUDIOS</p>
+            <div class="login-form">
+                <h2>Welcome!</h2>
+                <p>Enter your crew name to continue</p>
+                <div class="login-input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="loginUsername" placeholder="Your name (e.g., John)" required>
+                </div>
+                <button class="login-btn" id="loginBtn">
+                    <i class="fas fa-arrow-right"></i> Enter Studio
+                </button>
+                <div class="login-error" id="loginError"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Splash Screen -->
-    <div id="splash-screen">
+    <div id="splash-screen" class="hidden">
         <div class="splash-content">
             <div class="logo-container">
                 <i class="fas fa-film"></i>
@@ -34,12 +58,8 @@
                     <span>CINEMAX</span>
                 </div>
                 <div class="header-actions">
-                    <button class="search-btn" id="searchBtn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <button class="menu-btn" id="menuBtn">
-                        <i class="fas fa-bars"></i>
-                    </button>
+                    <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i></button>
+                    <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
                 </div>
             </div>
         </header>
@@ -50,11 +70,9 @@
                 <div class="search-header">
                     <div class="search-input-wrapper">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Search projects, tasks, crew...">
+                        <input type="text" id="searchInput" placeholder="Search...">
                     </div>
-                    <button class="close-search" id="closeSearch">
-                        <i class="fas fa-times"></i>
-                    </button>
+                    <button class="close-search" id="closeSearch"><i class="fas fa-times"></i></button>
                 </div>
                 <div class="search-results" id="searchResults"></div>
             </div>
@@ -64,276 +82,121 @@
         <div class="side-menu" id="sideMenu">
             <div class="menu-header">
                 <div class="user-info">
-                    <div class="user-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
+                    <div class="user-avatar"><i class="fas fa-user"></i></div>
                     <div class="user-details">
-                        <h3>Production Crew</h3>
+                        <h3 id="menuUsername">Crew</h3>
                         <p>Cinemax Studios</p>
                     </div>
                 </div>
-                <button class="close-menu" id="closeMenu">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button class="close-menu" id="closeMenu"><i class="fas fa-times"></i></button>
             </div>
             <nav class="menu-nav">
-                <a href="#" class="menu-item active" data-page="dashboard">
-                    <i class="fas fa-home"></i><span>Dashboard</span>
-                </a>
-                <a href="#" class="menu-item" data-page="projects">
-                    <i class="fas fa-video"></i><span>Projects</span>
-                </a>
-                <a href="#" class="menu-item" data-page="tasks">
-                    <i class="fas fa-tasks"></i><span>Workflows</span>
-                </a>
-                <a href="#" class="menu-item" data-page="schedule">
-                    <i class="fas fa-calendar-alt"></i><span>Schedule</span>
-                </a>
-                <a href="#" class="menu-item" data-page="locations">
-                    <i class="fas fa-map-marker-alt"></i><span>Locations</span>
-                </a>
-                <a href="#" class="menu-item" data-page="budget">
-                    <i class="fas fa-wallet"></i><span>Budget</span>
-                </a>
-                <a href="#" class="menu-item" data-page="equipment">
-                    <i class="fas fa-camera"></i><span>Equipment</span>
-                </a>
-                <a href="#" class="menu-item" data-page="crew">
-                    <i class="fas fa-users"></i><span>Crew</span>
-                </a>
-                <a href="#" class="menu-item" data-page="notepad">
-                    <i class="fas fa-sticky-note"></i><span>Notepad</span>
-                </a>
-                <a href="#" class="menu-item" data-page="announcements">
-                    <i class="fas fa-bullhorn"></i><span>Announcements</span>
-                </a>
-                <a href="#" class="menu-item" data-page="analytics">
-                    <i class="fas fa-chart-bar"></i><span>Analytics</span>
-                </a>
+                <a href="#" class="menu-item active" data-page="dashboard"><i class="fas fa-home"></i><span>Dashboard</span></a>
+                <a href="#" class="menu-item" data-page="projects"><i class="fas fa-video"></i><span>Projects</span></a>
+                <a href="#" class="menu-item" data-page="tasks"><i class="fas fa-tasks"></i><span>Workflows</span></a>
+                <a href="#" class="menu-item" data-page="schedule"><i class="fas fa-calendar-alt"></i><span>Schedule</span></a>
+                <a href="#" class="menu-item" data-page="locations"><i class="fas fa-map-marker-alt"></i><span>Locations</span></a>
+                <a href="#" class="menu-item" data-page="budget"><i class="fas fa-wallet"></i><span>Budget</span></a>
+                <a href="#" class="menu-item" data-page="equipment"><i class="fas fa-camera"></i><span>Equipment</span></a>
+                <a href="#" class="menu-item" data-page="crew"><i class="fas fa-users"></i><span>Crew</span></a>
+                <a href="#" class="menu-item" data-page="chat"><i class="fas fa-comments"></i><span>Chat</span><span class="badge" id="chatBadge"></span></a>
+                <a href="#" class="menu-item" data-page="notepad"><i class="fas fa-sticky-note"></i><span>Notepad</span></a>
+                <a href="#" class="menu-item" data-page="announcements"><i class="fas fa-bullhorn"></i><span>Announcements</span></a>
+                <a href="#" class="menu-item" data-page="analytics"><i class="fas fa-chart-bar"></i><span>Analytics</span></a>
             </nav>
             <div class="menu-footer">
-                <button class="theme-toggle" id="themeToggle">
-                    <i class="fas fa-moon"></i><span>Dark Mode</span>
-                </button>
+                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i><span>Dark Mode</span></button>
+                <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>Logout</span></button>
             </div>
         </div>
         <div class="menu-overlay" id="menuOverlay"></div>
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Dashboard Page -->
+            <!-- Dashboard -->
             <section class="page active" id="dashboard">
                 <div class="page-header">
                     <h1>Dashboard</h1>
                     <p id="currentDate"></p>
                 </div>
-
-                <!-- Announcements Banner -->
                 <div class="announcements-banner" id="announcementsBanner"></div>
-                
                 <div class="stats-grid">
-                    <div class="stat-card" onclick="navigateToPage('projects')">
-                        <div class="stat-icon projects"><i class="fas fa-video"></i></div>
-                        <div class="stat-info">
-                            <h3 id="totalProjects">0</h3>
-                            <p>Projects</p>
-                        </div>
-                    </div>
-                    <div class="stat-card" onclick="navigateToPage('tasks')">
-                        <div class="stat-icon tasks"><i class="fas fa-tasks"></i></div>
-                        <div class="stat-info">
-                            <h3 id="pendingTasks">0</h3>
-                            <p>Pending Tasks</p>
-                        </div>
-                    </div>
-                    <div class="stat-card" onclick="navigateToPage('schedule')">
-                        <div class="stat-icon schedule"><i class="fas fa-calendar"></i></div>
-                        <div class="stat-info">
-                            <h3 id="upcomingSchedules">0</h3>
-                            <p>Upcoming Shoots</p>
-                        </div>
-                    </div>
-                    <div class="stat-card" onclick="navigateToPage('budget')">
-                        <div class="stat-icon budget"><i class="fas fa-wallet"></i></div>
-                        <div class="stat-info">
-                            <h3 id="totalBudget">₹0</h3>
-                            <p>Total Budget</p>
-                        </div>
-                    </div>
+                    <div class="stat-card" onclick="navigateToPage('projects')"><div class="stat-icon projects"><i class="fas fa-video"></i></div><div class="stat-info"><h3 id="totalProjects">0</h3><p>Projects</p></div></div>
+                    <div class="stat-card" onclick="navigateToPage('tasks')"><div class="stat-icon tasks"><i class="fas fa-tasks"></i></div><div class="stat-info"><h3 id="pendingTasks">0</h3><p>Pending Tasks</p></div></div>
+                    <div class="stat-card" onclick="navigateToPage('schedule')"><div class="stat-icon schedule"><i class="fas fa-calendar"></i></div><div class="stat-info"><h3 id="upcomingSchedules">0</h3><p>Upcoming Shoots</p></div></div>
+                    <div class="stat-card" onclick="navigateToPage('chat')"><div class="stat-icon crew"><i class="fas fa-comments"></i></div><div class="stat-info"><h3 id="unreadMessages">0</h3><p>Unread Messages</p></div></div>
                 </div>
-
-                <!-- Quick Actions -->
                 <div class="quick-actions">
-                    <button class="quick-action-btn" onclick="quickAddProject()">
-                        <i class="fas fa-plus"></i> Project
-                    </button>
-                    <button class="quick-action-btn" onclick="quickAddTask()">
-                        <i class="fas fa-plus"></i> Task
-                    </button>
-                    <button class="quick-action-btn" onclick="quickAddSchedule()">
-                        <i class="fas fa-plus"></i> Schedule
-                    </button>
-                    <button class="quick-action-btn" onclick="quickAddNote()">
-                        <i class="fas fa-plus"></i> Note
-                    </button>
+                    <button class="quick-action-btn" onclick="quickAddProject()"><i class="fas fa-plus"></i> Project</button>
+                    <button class="quick-action-btn" onclick="quickAddTask()"><i class="fas fa-plus"></i> Task</button>
+                    <button class="quick-action-btn" onclick="quickAddSchedule()"><i class="fas fa-plus"></i> Schedule</button>
+                    <button class="quick-action-btn" onclick="quickAddNote()"><i class="fas fa-plus"></i> Note</button>
                 </div>
-
-                <div class="section-header">
-                    <h2>Today's Schedule</h2>
-                    <a href="#" onclick="navigateToPage('schedule')">View All</a>
-                </div>
+                <div class="section-header"><h2>Today's Schedule</h2><a href="#" onclick="navigateToPage('schedule')">View All</a></div>
                 <div class="schedule-list" id="todayScheduleList"></div>
-
-                <div class="section-header">
-                    <h2>Active Projects</h2>
-                    <a href="#" onclick="navigateToPage('projects')">View All</a>
-                </div>
+                <div class="section-header"><h2>Active Projects</h2><a href="#" onclick="navigateToPage('projects')">View All</a></div>
                 <div class="projects-list" id="activeProjectsList"></div>
-
-                <div class="section-header">
-                    <h2>Pending Tasks</h2>
-                    <a href="#" onclick="navigateToPage('tasks')">View All</a>
-                </div>
+                <div class="section-header"><h2>Pending Tasks</h2><a href="#" onclick="navigateToPage('tasks')">View All</a></div>
                 <div class="tasks-list" id="recentTasksList"></div>
             </section>
 
-            <!-- Projects Page -->
+            <!-- Projects -->
             <section class="page" id="projects">
-                <div class="page-header">
-                    <h1>Projects</h1>
-                    <button class="add-btn" id="addProjectBtn"><i class="fas fa-plus"></i></button>
-                </div>
-                
+                <div class="page-header"><h1>Projects</h1><button class="add-btn" id="addProjectBtn"><i class="fas fa-plus"></i></button></div>
                 <div class="filter-tabs">
                     <button class="filter-tab active" data-filter="all">All</button>
                     <button class="filter-tab" data-filter="Pre-Production">Pre-Prod</button>
                     <button class="filter-tab" data-filter="Production">Production</button>
                     <button class="filter-tab" data-filter="Post-Production">Post-Prod</button>
-                    <button class="filter-tab" data-filter="Completed">Completed</button>
+                    <button class="filter-tab" data-filter="Completed">Done</button>
                 </div>
-
                 <div class="projects-grid" id="projectsGrid"></div>
             </section>
 
-            <!-- Tasks Page -->
+            <!-- Tasks -->
             <section class="page" id="tasks">
-                <div class="page-header">
-                    <h1>Workflows</h1>
-                    <button class="add-btn" id="addTaskBtn"><i class="fas fa-plus"></i></button>
-                </div>
-
+                <div class="page-header"><h1>Workflows</h1><button class="add-btn" id="addTaskBtn"><i class="fas fa-plus"></i></button></div>
                 <div class="filter-row">
-                    <select id="taskProjectFilter" class="filter-select">
-                        <option value="">All Projects</option>
-                    </select>
-                    <select id="taskPriorityFilter" class="filter-select">
-                        <option value="">All Priority</option>
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
-                    </select>
+                    <select id="taskProjectFilter" class="filter-select"><option value="">All Projects</option></select>
+                    <select id="taskPriorityFilter" class="filter-select"><option value="">All Priority</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select>
                 </div>
-
                 <div class="tasks-container" id="tasksContainer"></div>
             </section>
 
-            <!-- Schedule Page -->
+            <!-- Schedule -->
             <section class="page" id="schedule">
-                <div class="page-header">
-                    <h1>Schedule</h1>
-                    <button class="add-btn" id="addScheduleBtn"><i class="fas fa-plus"></i></button>
-                </div>
-
-                <div class="calendar-nav">
-                    <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
-                    <h3 id="currentMonth">January 2024</h3>
-                    <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
-                </div>
-
+                <div class="page-header"><h1>Schedule</h1><button class="add-btn" id="addScheduleBtn"><i class="fas fa-plus"></i></button></div>
+                <div class="calendar-nav"><button id="prevMonth"><i class="fas fa-chevron-left"></i></button><h3 id="currentMonth"></h3><button id="nextMonth"><i class="fas fa-chevron-right"></i></button></div>
                 <div class="calendar-grid" id="calendarGrid"></div>
-
-                <div class="section-header">
-                    <h2>Upcoming Shoots</h2>
-                </div>
+                <div class="section-header"><h2>Upcoming Shoots</h2></div>
                 <div class="schedule-container" id="scheduleContainer"></div>
             </section>
 
-            <!-- Locations Page -->
+            <!-- Locations -->
             <section class="page" id="locations">
-                <div class="page-header">
-                    <h1>Locations</h1>
-                    <button class="add-btn" id="addLocationBtn"><i class="fas fa-plus"></i></button>
-                </div>
+                <div class="page-header"><h1>Locations</h1><button class="add-btn" id="addLocationBtn"><i class="fas fa-plus"></i></button></div>
                 <div class="locations-grid" id="locationsGrid"></div>
             </section>
 
-            <!-- Budget Page -->
+            <!-- Budget -->
             <section class="page" id="budget">
-                <div class="page-header">
-                    <h1>Budget</h1>
-                    <button class="add-btn" id="addBudgetBtn"><i class="fas fa-plus"></i></button>
-                </div>
-
+                <div class="page-header"><h1>Budget</h1><button class="add-btn" id="addBudgetBtn"><i class="fas fa-plus"></i></button></div>
                 <div class="budget-summary">
-                    <div class="budget-card income">
-                        <i class="fas fa-arrow-down"></i>
-                        <div>
-                            <p>Income</p>
-                            <h3 id="totalIncome">₹0</h3>
-                        </div>
-                    </div>
-                    <div class="budget-card expense">
-                        <i class="fas fa-arrow-up"></i>
-                        <div>
-                            <p>Expenses</p>
-                            <h3 id="totalExpenses">₹0</h3>
-                        </div>
-                    </div>
-                    <div class="budget-card balance">
-                        <i class="fas fa-balance-scale"></i>
-                        <div>
-                            <p>Balance</p>
-                            <h3 id="netBalance">₹0</h3>
-                        </div>
-                    </div>
+                    <div class="budget-card income"><i class="fas fa-arrow-down"></i><div><p>Income</p><h3 id="totalIncome">₹0</h3></div></div>
+                    <div class="budget-card expense"><i class="fas fa-arrow-up"></i><div><p>Expenses</p><h3 id="totalExpenses">₹0</h3></div></div>
+                    <div class="budget-card balance"><i class="fas fa-balance-scale"></i><div><p>Balance</p><h3 id="netBalance">₹0</h3></div></div>
                 </div>
-
                 <div class="filter-row">
-                    <select id="budgetProjectFilter" class="filter-select">
-                        <option value="">All Projects</option>
-                    </select>
-                    <select id="budgetTypeFilter" class="filter-select">
-                        <option value="">All Types</option>
-                        <option value="Income">Income</option>
-                        <option value="Expense">Expense</option>
-                    </select>
+                    <select id="budgetProjectFilter" class="filter-select"><option value="">All Projects</option></select>
+                    <select id="budgetTypeFilter" class="filter-select"><option value="">All Types</option><option value="Income">Income</option><option value="Expense">Expense</option></select>
                 </div>
-
                 <div class="budget-list" id="budgetList"></div>
             </section>
 
-            <!-- Equipment Page -->
+            <!-- Equipment -->
             <section class="page" id="equipment">
-                <div class="page-header">
-                    <h1>Equipment</h1>
-                    <button class="add-btn" id="addEquipmentBtn"><i class="fas fa-plus"></i></button>
-                </div>
-
-                <div class="equipment-stats">
-                    <div class="equip-stat">
-                        <span id="totalEquipment">0</span>
-                        <p>Total Items</p>
-                    </div>
-                    <div class="equip-stat">
-                        <span id="packedEquipment">0</span>
-                        <p>Packed</p>
-                    </div>
-                    <div class="equip-stat">
-                        <span id="availableEquipment">0</span>
-                        <p>Available</p>
-                    </div>
-                </div>
-
+                <div class="page-header"><h1>Equipment</h1><button class="add-btn" id="addEquipmentBtn"><i class="fas fa-plus"></i></button></div>
+                <div class="equipment-stats"><div class="equip-stat"><span id="totalEquipment">0</span><p>Total</p></div><div class="equip-stat"><span id="packedEquipment">0</span><p>Packed</p></div><div class="equip-stat"><span id="availableEquipment">0</span><p>Available</p></div></div>
                 <div class="filter-tabs equipment-tabs">
                     <button class="filter-tab active" data-eqfilter="all">All</button>
                     <button class="filter-tab" data-eqfilter="Camera">Camera</button>
@@ -342,556 +205,212 @@
                     <button class="filter-tab" data-eqfilter="Grip">Grip</button>
                     <button class="filter-tab" data-eqfilter="Other">Other</button>
                 </div>
-
                 <div class="equipment-grid" id="equipmentGrid"></div>
             </section>
 
-            <!-- Crew Page -->
+            <!-- Crew -->
             <section class="page" id="crew">
-                <div class="page-header">
-                    <h1>Crew</h1>
-                    <button class="add-btn" id="addCrewBtn"><i class="fas fa-plus"></i></button>
-                </div>
-
-                <div class="crew-stats">
-                    <div class="crew-stat-item">
-                        <span id="totalCrewCount">0</span>
-                        <p>Total Members</p>
-                    </div>
-                    <div class="crew-stat-item">
-                        <span id="availableCrewCount">0</span>
-                        <p>Available</p>
-                    </div>
-                </div>
-
+                <div class="page-header"><h1>Crew</h1><button class="add-btn" id="addCrewBtn"><i class="fas fa-plus"></i></button></div>
+                <div class="crew-stats"><div class="crew-stat-item"><span id="totalCrewCount">0</span><p>Total</p></div><div class="crew-stat-item"><span id="availableCrewCount">0</span><p>Available</p></div></div>
                 <div class="crew-grid" id="crewGrid"></div>
             </section>
 
-            <!-- Notepad Page -->
+            <!-- CHAT PAGE -->
+            <section class="page" id="chat">
+                <!-- Chat List View -->
+                <div id="chatListView">
+                    <div class="page-header">
+                        <h1>Chat</h1>
+                        <div class="chat-header-actions">
+                            <button class="add-btn" id="newPrivateChatBtn" title="New Chat"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="chat-tabs">
+                        <button class="chat-tab active" data-chattab="all">All</button>
+                        <button class="chat-tab" data-chattab="private">Private</button>
+                        <button class="chat-tab" data-chattab="group">Groups</button>
+                    </div>
+
+                    <div class="chat-rooms-list" id="chatRoomsList"></div>
+                </div>
+
+                <!-- Chat Room View -->
+                <div id="chatRoomView" class="hidden">
+                    <div class="chat-room-header">
+                        <button class="back-btn" id="chatBackBtn"><i class="fas fa-arrow-left"></i></button>
+                        <div class="chat-room-info">
+                            <div class="chat-room-avatar" id="chatRoomAvatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <h3 id="chatRoomName">Chat</h3>
+                                <p id="chatRoomStatus">Online</p>
+                            </div>
+                        </div>
+                        <div class="chat-room-actions">
+                            <button class="chat-action-btn" id="chatInfoBtn"><i class="fas fa-info-circle"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages" id="chatMessages"></div>
+
+                    <div class="chat-input-bar">
+                        <input type="text" id="chatInput" placeholder="Type a message...">
+                        <button class="send-btn" id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notepad -->
             <section class="page" id="notepad">
-                <div class="page-header">
-                    <h1>Notepad</h1>
-                    <button class="add-btn" id="addNoteBtn"><i class="fas fa-plus"></i></button>
-                </div>
-
-                <div class="filter-row">
-                    <select id="noteProjectFilter" class="filter-select">
-                        <option value="">All Notes</option>
-                    </select>
-                </div>
-
+                <div class="page-header"><h1>Notepad</h1><button class="add-btn" id="addNoteBtn"><i class="fas fa-plus"></i></button></div>
+                <div class="filter-row"><select id="noteProjectFilter" class="filter-select"><option value="">All Notes</option></select></div>
                 <div class="notepad-container" id="notepadContainer"></div>
             </section>
 
-            <!-- Announcements Page -->
+            <!-- Announcements -->
             <section class="page" id="announcements">
-                <div class="page-header">
-                    <h1>Announcements</h1>
-                    <button class="add-btn" id="addAnnouncementBtn"><i class="fas fa-plus"></i></button>
-                </div>
+                <div class="page-header"><h1>Announcements</h1><button class="add-btn" id="addAnnouncementBtn"><i class="fas fa-plus"></i></button></div>
                 <div class="announcements-list" id="announcementsList"></div>
             </section>
 
-            <!-- Analytics Page -->
+            <!-- Analytics -->
             <section class="page" id="analytics">
-                <div class="page-header">
-                    <h1>Analytics</h1>
-                    <button class="refresh-btn" onclick="loadAnalytics()"><i class="fas fa-sync-alt"></i></button>
-                </div>
-
+                <div class="page-header"><h1>Analytics</h1><button class="refresh-btn" onclick="loadAnalytics()"><i class="fas fa-sync-alt"></i></button></div>
                 <div class="analytics-grid">
-                    <div class="analytics-card">
-                        <h3>Project Status</h3>
-                        <div class="chart-container" id="projectStatusChart"></div>
-                    </div>
-                    <div class="analytics-card">
-                        <h3>Task Completion</h3>
-                        <div class="progress-ring-container">
-                            <div class="progress-ring" id="taskProgressRing">
-                                <span id="taskProgressPercent">0%</span>
-                            </div>
-                            <p>Tasks Completed</p>
-                        </div>
-                    </div>
-                    <div class="analytics-card full-width">
-                        <h3>Budget Breakdown</h3>
-                        <div class="budget-breakdown" id="budgetBreakdown"></div>
-                    </div>
-                    <div class="analytics-card">
-                        <h3>Quick Stats</h3>
-                        <div class="quick-stats">
-                            <div class="quick-stat-item">
-                                <span id="analyticsProjects">0</span>
-                                <p>Total Projects</p>
-                            </div>
-                            <div class="quick-stat-item">
-                                <span id="analyticsCompleted">0</span>
-                                <p>Completed</p>
-                            </div>
-                            <div class="quick-stat-item">
-                                <span id="analyticsCrew">0</span>
-                                <p>Crew Members</p>
-                            </div>
-                            <div class="quick-stat-item">
-                                <span id="analyticsSchedules">0</span>
-                                <p>Upcoming Shoots</p>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="analytics-card"><h3>Project Status</h3><div class="chart-container" id="projectStatusChart"></div></div>
+                    <div class="analytics-card"><h3>Task Completion</h3><div class="progress-ring-container"><div class="progress-ring" id="taskProgressRing"><span id="taskProgressPercent">0%</span></div><p>Completed</p></div></div>
+                    <div class="analytics-card full-width"><h3>Budget Breakdown</h3><div class="budget-breakdown" id="budgetBreakdown"></div></div>
+                    <div class="analytics-card"><h3>Quick Stats</h3><div class="quick-stats"><div class="quick-stat-item"><span id="analyticsProjects">0</span><p>Projects</p></div><div class="quick-stat-item"><span id="analyticsCompleted">0</span><p>Completed</p></div><div class="quick-stat-item"><span id="analyticsCrew">0</span><p>Crew</p></div><div class="quick-stat-item"><span id="analyticsSchedules">0</span><p>Shoots</p></div></div></div>
                 </div>
             </section>
         </main>
 
         <!-- Bottom Navigation -->
-        <nav class="bottom-nav">
-            <a href="#" class="nav-item active" data-page="dashboard">
-                <i class="fas fa-home"></i><span>Home</span>
-            </a>
-            <a href="#" class="nav-item" data-page="projects">
-                <i class="fas fa-video"></i><span>Projects</span>
-            </a>
-            <a href="#" class="nav-item" data-page="schedule">
-                <i class="fas fa-calendar"></i><span>Schedule</span>
-            </a>
-            <a href="#" class="nav-item" data-page="budget">
-                <i class="fas fa-wallet"></i><span>Budget</span>
-            </a>
-            <a href="#" class="nav-item" data-page="crew">
-                <i class="fas fa-users"></i><span>Crew</span>
-            </a>
+        <nav class="bottom-nav" id="bottomNav">
+            <a href="#" class="nav-item active" data-page="dashboard"><i class="fas fa-home"></i><span>Home</span></a>
+            <a href="#" class="nav-item" data-page="projects"><i class="fas fa-video"></i><span>Projects</span></a>
+            <a href="#" class="nav-item" data-page="chat"><i class="fas fa-comments"></i><span>Chat</span><span class="nav-badge" id="navChatBadge"></span></a>
+            <a href="#" class="nav-item" data-page="schedule"><i class="fas fa-calendar"></i><span>Schedule</span></a>
+            <a href="#" class="nav-item" data-page="crew"><i class="fas fa-users"></i><span>Crew</span></a>
         </nav>
     </div>
 
-    <!-- MODALS -->
+    <!-- ALL MODALS -->
     <!-- Project Modal -->
-    <div class="modal" id="projectModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="projectModalTitle">Add Project</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="projectForm">
-                <input type="hidden" id="projectId">
-                <div class="form-group">
-                    <label>Project Name *</label>
-                    <input type="text" id="projectName" required placeholder="Enter project name">
-                </div>
-                <div class="form-group">
-                    <label>Director *</label>
-                    <input type="text" id="projectDirector" required placeholder="Director name">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Category</label>
-                        <select id="projectCategory">
-                            <option value="Short Film">Short Film</option>
-                            <option value="Music Video">Music Video</option>
-                            <option value="Documentary">Documentary</option>
-                            <option value="Commercial">Commercial</option>
-                            <option value="Web Series">Web Series</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select id="projectStatus">
-                            <option value="Pre-Production">Pre-Production</option>
-                            <option value="Production">Production</option>
-                            <option value="Post-Production">Post-Production</option>
-                            <option value="Completed">Completed</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Start Date</label>
-                        <input type="date" id="projectStartDate">
-                    </div>
-                    <div class="form-group">
-                        <label>End Date</label>
-                        <input type="date" id="projectEndDate">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Budget (₹)</label>
-                    <input type="number" id="projectBudget" placeholder="0">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="projectDescription" placeholder="Project description..." rows="3"></textarea>
-                </div>
-                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save Project</button>
-            </form>
-        </div>
-    </div>
+    <div class="modal" id="projectModal"><div class="modal-content"><div class="modal-header"><h2 id="projectModalTitle">Add Project</h2><button class="close-modal">&times;</button></div>
+    <form id="projectForm"><input type="hidden" id="projectId">
+    <div class="form-group"><label>Project Name *</label><input type="text" id="projectName" required placeholder="Project name"></div>
+    <div class="form-group"><label>Director *</label><input type="text" id="projectDirector" required placeholder="Director"></div>
+    <div class="form-row"><div class="form-group"><label>Category</label><select id="projectCategory"><option value="Short Film">Short Film</option><option value="Music Video">Music Video</option><option value="Documentary">Documentary</option><option value="Commercial">Commercial</option><option value="Web Series">Web Series</option><option value="Other">Other</option></select></div>
+    <div class="form-group"><label>Status</label><select id="projectStatus"><option value="Pre-Production">Pre-Production</option><option value="Production">Production</option><option value="Post-Production">Post-Production</option><option value="Completed">Completed</option></select></div></div>
+    <div class="form-row"><div class="form-group"><label>Start</label><input type="date" id="projectStartDate"></div><div class="form-group"><label>End</label><input type="date" id="projectEndDate"></div></div>
+    <div class="form-group"><label>Budget (₹)</label><input type="number" id="projectBudget" placeholder="0"></div>
+    <div class="form-group"><label>Description</label><textarea id="projectDescription" rows="2" placeholder="Description..."></textarea></div>
+    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save</button></form></div></div>
 
     <!-- Task Modal -->
-    <div class="modal" id="taskModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="taskModalTitle">Add Task</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="taskForm">
-                <input type="hidden" id="taskId">
-                <div class="form-group">
-                    <label>Project *</label>
-                    <select id="taskProject" required></select>
-                </div>
-                <div class="form-group">
-                    <label>Task Name *</label>
-                    <input type="text" id="taskName" required placeholder="Enter task name">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Assigned To</label>
-                        <select id="taskAssignedTo"></select>
-                    </div>
-                    <div class="form-group">
-                        <label>Priority</label>
-                        <select id="taskPriority">
-                            <option value="Low">Low</option>
-                            <option value="Medium" selected>Medium</option>
-                            <option value="High">High</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Due Date</label>
-                    <input type="date" id="taskDueDate">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="taskDescription" placeholder="Task details..." rows="3"></textarea>
-                </div>
-                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save Task</button>
-            </form>
-        </div>
-    </div>
+    <div class="modal" id="taskModal"><div class="modal-content"><div class="modal-header"><h2 id="taskModalTitle">Add Task</h2><button class="close-modal">&times;</button></div>
+    <form id="taskForm"><input type="hidden" id="taskId">
+    <div class="form-group"><label>Project *</label><select id="taskProject" required></select></div>
+    <div class="form-group"><label>Task Name *</label><input type="text" id="taskName" required placeholder="Task name"></div>
+    <div class="form-row"><div class="form-group"><label>Assigned To</label><select id="taskAssignedTo"></select></div><div class="form-group"><label>Priority</label><select id="taskPriority"><option value="Low">Low</option><option value="Medium" selected>Medium</option><option value="High">High</option></select></div></div>
+    <div class="form-group"><label>Due Date</label><input type="date" id="taskDueDate"></div>
+    <div class="form-group"><label>Description</label><textarea id="taskDescription" rows="2" placeholder="Details..."></textarea></div>
+    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save</button></form></div></div>
 
     <!-- Schedule Modal -->
-    <div class="modal" id="scheduleModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="scheduleModalTitle">Add Schedule</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="scheduleForm">
-                <input type="hidden" id="scheduleId">
-                <div class="form-group">
-                    <label>Project *</label>
-                    <select id="scheduleProject" required></select>
-                </div>
-                <div class="form-group">
-                    <label>Title *</label>
-                    <input type="text" id="scheduleTitle" required placeholder="e.g., Scene 1 Shoot">
-                </div>
-                <div class="form-group">
-                    <label>Date *</label>
-                    <input type="date" id="scheduleDate" required>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Start Time</label>
-                        <input type="time" id="scheduleStartTime">
-                    </div>
-                    <div class="form-group">
-                        <label>End Time</label>
-                        <input type="time" id="scheduleEndTime">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Location</label>
-                    <select id="scheduleLocation"></select>
-                </div>
-                <div class="form-group">
-                    <label>Crew Assigned</label>
-                    <input type="text" id="scheduleCrewAssigned" placeholder="e.g., John, Mike, Sarah">
-                </div>
-                <div class="form-group">
-                    <label>Notes</label>
-                    <textarea id="scheduleNotes" placeholder="Additional notes..." rows="3"></textarea>
-                </div>
-                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save Schedule</button>
-            </form>
-        </div>
-    </div>
+    <div class="modal" id="scheduleModal"><div class="modal-content"><div class="modal-header"><h2 id="scheduleModalTitle">Add Schedule</h2><button class="close-modal">&times;</button></div>
+    <form id="scheduleForm"><input type="hidden" id="scheduleId">
+    <div class="form-group"><label>Project *</label><select id="scheduleProject" required></select></div>
+    <div class="form-group"><label>Title *</label><input type="text" id="scheduleTitle" required placeholder="e.g., Scene 1 Shoot"></div>
+    <div class="form-group"><label>Date *</label><input type="date" id="scheduleDate" required></div>
+    <div class="form-row"><div class="form-group"><label>Start Time</label><input type="time" id="scheduleStartTime"></div><div class="form-group"><label>End Time</label><input type="time" id="scheduleEndTime"></div></div>
+    <div class="form-group"><label>Location</label><select id="scheduleLocation"></select></div>
+    <div class="form-group"><label>Crew</label><input type="text" id="scheduleCrewAssigned" placeholder="John, Mike"></div>
+    <div class="form-group"><label>Notes</label><textarea id="scheduleNotes" rows="2"></textarea></div>
+    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save</button></form></div></div>
 
     <!-- Location Modal -->
-    <div class="modal" id="locationModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="locationModalTitle">Add Location</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="locationForm">
-                <input type="hidden" id="locationId">
-                <div class="form-group">
-                    <label>Location Name *</label>
-                    <input type="text" id="locationName" required placeholder="e.g., City Mall">
-                </div>
-                <div class="form-group">
-                    <label>Address *</label>
-                    <textarea id="locationAddress" required placeholder="Full address..." rows="2"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Google Maps Link</label>
-                    <input type="url" id="locationGoogleMaps" placeholder="https://maps.google.com/...">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Contact Person</label>
-                        <input type="text" id="locationContactPerson" placeholder="Name">
-                    </div>
-                    <div class="form-group">
-                        <label>Contact Phone</label>
-                        <input type="tel" id="locationContactPhone" placeholder="Phone">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Notes</label>
-                    <textarea id="locationNotes" placeholder="Parking info, permissions, etc..." rows="3"></textarea>
-                </div>
-                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save Location</button>
-            </form>
-        </div>
-    </div>
+    <div class="modal" id="locationModal"><div class="modal-content"><div class="modal-header"><h2 id="locationModalTitle">Add Location</h2><button class="close-modal">&times;</button></div>
+    <form id="locationForm"><input type="hidden" id="locationId">
+    <div class="form-group"><label>Name *</label><input type="text" id="locationName" required placeholder="Location name"></div>
+    <div class="form-group"><label>Address *</label><textarea id="locationAddress" required rows="2" placeholder="Full address"></textarea></div>
+    <div class="form-group"><label>Google Maps Link</label><input type="url" id="locationGoogleMaps" placeholder="https://maps.google.com/..."></div>
+    <div class="form-row"><div class="form-group"><label>Contact</label><input type="text" id="locationContactPerson" placeholder="Name"></div><div class="form-group"><label>Phone</label><input type="tel" id="locationContactPhone" placeholder="Phone"></div></div>
+    <div class="form-group"><label>Notes</label><textarea id="locationNotes" rows="2"></textarea></div>
+    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save</button></form></div></div>
 
     <!-- Budget Modal -->
-    <div class="modal" id="budgetModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="budgetModalTitle">Add Budget Item</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="budgetForm">
-                <input type="hidden" id="budgetId">
-                <div class="form-group">
-                    <label>Project *</label>
-                    <select id="budgetProject" required></select>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Type *</label>
-                        <select id="budgetType" required>
-                            <option value="Expense">Expense</option>
-                            <option value="Income">Income</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Category *</label>
-                        <select id="budgetCategory" required>
-                            <option value="Equipment">Equipment</option>
-                            <option value="Location">Location</option>
-                            <option value="Crew">Crew Payment</option>
-                            <option value="Food">Food & Catering</option>
-                            <option value="Transport">Transport</option>
-                            <option value="Props">Props & Costumes</option>
-                            <option value="Post-Production">Post-Production</option>
-                            <option value="Marketing">Marketing</option>
-                            <option value="Sponsorship">Sponsorship</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Description *</label>
-                    <input type="text" id="budgetDescription" required placeholder="e.g., Camera rental">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Amount (₹) *</label>
-                        <input type="number" id="budgetAmount" required placeholder="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Date</label>
-                        <input type="date" id="budgetDate">
-                    </div>
-                </div>
-                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save</button>
-            </form>
-        </div>
-    </div>
+    <div class="modal" id="budgetModal"><div class="modal-content"><div class="modal-header"><h2 id="budgetModalTitle">Add Budget</h2><button class="close-modal">&times;</button></div>
+    <form id="budgetForm"><input type="hidden" id="budgetId">
+    <div class="form-group"><label>Project *</label><select id="budgetProject" required></select></div>
+    <div class="form-row"><div class="form-group"><label>Type</label><select id="budgetType"><option value="Expense">Expense</option><option value="Income">Income</option></select></div><div class="form-group"><label>Category</label><select id="budgetCategory"><option value="Equipment">Equipment</option><option value="Location">Location</option><option value="Crew">Crew</option><option value="Food">Food</option><option value="Transport">Transport</option><option value="Props">Props</option><option value="Post-Production">Post-Prod</option><option value="Sponsorship">Sponsorship</option><option value="Other">Other</option></select></div></div>
+    <div class="form-group"><label>Description *</label><input type="text" id="budgetDescription" required placeholder="Description"></div>
+    <div class="form-row"><div class="form-group"><label>Amount (₹) *</label><input type="number" id="budgetAmount" required placeholder="0"></div><div class="form-group"><label>Date</label><input type="date" id="budgetDate"></div></div>
+    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save</button></form></div></div>
 
     <!-- Equipment Modal -->
-    <div class="modal" id="equipmentModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="equipmentModalTitle">Add Equipment</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="equipmentForm">
-                <input type="hidden" id="equipmentId">
-                <div class="form-group">
-                    <label>Equipment Name *</label>
-                    <input type="text" id="equipmentName" required placeholder="e.g., Canon R5">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Category *</label>
-                        <select id="equipmentCategory" required>
-                            <option value="Camera">Camera</option>
-                            <option value="Lighting">Lighting</option>
-                            <option value="Audio">Audio</option>
-                            <option value="Grip">Grip</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Condition</label>
-                        <select id="equipmentCondition">
-                            <option value="Excellent">Excellent</option>
-                            <option value="Good" selected>Good</option>
-                            <option value="Fair">Fair</option>
-                            <option value="Needs Repair">Needs Repair</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Assigned To Project</label>
-                    <select id="equipmentProject"></select>
-                </div>
-                <div class="form-group">
-                    <label>Assigned To Person</label>
-                    <select id="equipmentAssignedTo"></select>
-                </div>
-                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save Equipment</button>
-            </form>
-        </div>
-    </div>
+    <div class="modal" id="equipmentModal"><div class="modal-content"><div class="modal-header"><h2 id="equipmentModalTitle">Add Equipment</h2><button class="close-modal">&times;</button></div>
+    <form id="equipmentForm"><input type="hidden" id="equipmentId">
+    <div class="form-group"><label>Name *</label><input type="text" id="equipmentName" required placeholder="e.g., Canon R5"></div>
+    <div class="form-row"><div class="form-group"><label>Category</label><select id="equipmentCategory"><option value="Camera">Camera</option><option value="Lighting">Lighting</option><option value="Audio">Audio</option><option value="Grip">Grip</option><option value="Other">Other</option></select></div><div class="form-group"><label>Condition</label><select id="equipmentCondition"><option value="Excellent">Excellent</option><option value="Good" selected>Good</option><option value="Fair">Fair</option><option value="Needs Repair">Needs Repair</option></select></div></div>
+    <div class="form-group"><label>Project</label><select id="equipmentProject"></select></div>
+    <div class="form-group"><label>Assigned To</label><select id="equipmentAssignedTo"></select></div>
+    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save</button></form></div></div>
 
     <!-- Crew Modal -->
-    <div class="modal" id="crewModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="crewModalTitle">Add Crew Member</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="crewForm">
-                <input type="hidden" id="crewId">
-                <div class="form-group">
-                    <label>Name *</label>
-                    <input type="text" id="crewName" required placeholder="Full name">
-                </div>
-                <div class="form-group">
-                    <label>Role *</label>
-                    <select id="crewRole" required>
-                        <option value="Director">Director</option>
-                        <option value="Producer">Producer</option>
-                        <option value="Cinematographer">Cinematographer</option>
-                        <option value="Editor">Editor</option>
-                        <option value="Sound Designer">Sound Designer</option>
-                        <option value="Writer">Writer</option>
-                        <option value="Actor">Actor</option>
-                        <option value="Production Assistant">Production Assistant</option>
-                        <option value="Gaffer">Gaffer</option>
-                        <option value="Grip">Grip</option>
-                        <option value="Makeup Artist">Makeup Artist</option>
-                        <option value="Art Director">Art Director</option>
-                        <option value="VFX Artist">VFX Artist</option>
-                        <option value="Colorist">Colorist</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Phone</label>
-                        <input type="tel" id="crewPhone" placeholder="Phone number">
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="crewEmail" placeholder="Email">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Skills</label>
-                    <input type="text" id="crewSkills" placeholder="e.g., Editing, VFX, Color Grading">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Availability</label>
-                        <select id="crewAvailability">
-                            <option value="Available">Available</option>
-                            <option value="Busy">Busy</option>
-                            <option value="On Leave">On Leave</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Rating</label>
-                        <select id="crewRating">
-                            <option value="5">⭐⭐⭐⭐⭐ (5)</option>
-                            <option value="4">⭐⭐⭐⭐ (4)</option>
-                            <option value="3">⭐⭐⭐ (3)</option>
-                            <option value="2">⭐⭐ (2)</option>
-                            <option value="1">⭐ (1)</option>
-                        </select>
-                    </div>
-                </div>
-                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save</button>
-            </form>
-        </div>
-    </div>
+    <div class="modal" id="crewModal"><div class="modal-content"><div class="modal-header"><h2 id="crewModalTitle">Add Crew</h2><button class="close-modal">&times;</button></div>
+    <form id="crewForm"><input type="hidden" id="crewId">
+    <div class="form-group"><label>Name *</label><input type="text" id="crewName" required placeholder="Full name"></div>
+    <div class="form-group"><label>Role *</label><select id="crewRole"><option value="Director">Director</option><option value="Producer">Producer</option><option value="Cinematographer">Cinematographer</option><option value="Editor">Editor</option><option value="Sound Designer">Sound Designer</option><option value="Writer">Writer</option><option value="Actor">Actor</option><option value="Production Assistant">PA</option><option value="VFX Artist">VFX</option><option value="Other">Other</option></select></div>
+    <div class="form-row"><div class="form-group"><label>Phone</label><input type="tel" id="crewPhone" placeholder="Phone"></div><div class="form-group"><label>Email</label><input type="email" id="crewEmail" placeholder="Email"></div></div>
+    <div class="form-group"><label>Skills</label><input type="text" id="crewSkills" placeholder="Editing, VFX..."></div>
+    <div class="form-row"><div class="form-group"><label>Availability</label><select id="crewAvailability"><option value="Available">Available</option><option value="Busy">Busy</option><option value="On Leave">On Leave</option></select></div><div class="form-group"><label>Rating</label><select id="crewRating"><option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option><option value="3">⭐⭐⭐</option><option value="2">⭐⭐</option><option value="1">⭐</option></select></div></div>
+    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save</button></form></div></div>
 
     <!-- Note Modal -->
-    <div class="modal" id="noteModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Add Note</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="noteForm">
-                <div class="form-group">
-                    <label>Project (Optional)</label>
-                    <select id="noteProject"></select>
-                </div>
-                <div class="form-group">
-                    <label>Note *</label>
-                    <textarea id="noteContent" required placeholder="Write your note here..." rows="5"></textarea>
-                </div>
-                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save Note</button>
-            </form>
-        </div>
-    </div>
+    <div class="modal" id="noteModal"><div class="modal-content"><div class="modal-header"><h2>Add Note</h2><button class="close-modal">&times;</button></div>
+    <form id="noteForm">
+    <div class="form-group"><label>Project</label><select id="noteProject"></select></div>
+    <div class="form-group"><label>Note *</label><textarea id="noteContent" required rows="4" placeholder="Write note..."></textarea></div>
+    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save</button></form></div></div>
 
     <!-- Announcement Modal -->
-    <div class="modal" id="announcementModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>New Announcement</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="announcementForm">
-                <div class="form-group">
-                    <label>Title *</label>
-                    <input type="text" id="announcementTitle" required placeholder="Announcement title">
-                </div>
-                <div class="form-group">
-                    <label>Message *</label>
-                    <textarea id="announcementMessage" required placeholder="Your message..." rows="4"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Priority</label>
-                    <select id="announcementPriority">
-                        <option value="Normal">Normal</option>
-                        <option value="Important">Important</option>
-                        <option value="Urgent">Urgent</option>
-                    </select>
-                </div>
-                <button type="submit" class="submit-btn"><i class="fas fa-bullhorn"></i> Post Announcement</button>
-            </form>
-        </div>
-    </div>
+    <div class="modal" id="announcementModal"><div class="modal-content"><div class="modal-header"><h2>New Announcement</h2><button class="close-modal">&times;</button></div>
+    <form id="announcementForm">
+    <div class="form-group"><label>Title *</label><input type="text" id="announcementTitle" required placeholder="Title"></div>
+    <div class="form-group"><label>Message *</label><textarea id="announcementMessage" required rows="3" placeholder="Message..."></textarea></div>
+    <div class="form-group"><label>Priority</label><select id="announcementPriority"><option value="Normal">Normal</option><option value="Important">Important</option><option value="Urgent">Urgent</option></select></div>
+    <button type="submit" class="submit-btn"><i class="fas fa-bullhorn"></i> Post</button></form></div></div>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toastMessage">Success!</span>
+    <!-- New Chat Modal -->
+    <div class="modal" id="newChatModal"><div class="modal-content"><div class="modal-header"><h2>New Chat</h2><button class="close-modal">&times;</button></div>
+    <div class="chat-type-selector">
+        <button class="chat-type-btn active" id="privateChatTypeBtn" onclick="switchChatType('private')"><i class="fas fa-user"></i> Private Chat</button>
+        <button class="chat-type-btn" id="groupChatTypeBtn" onclick="switchChatType('group')"><i class="fas fa-users"></i> Group Chat</button>
     </div>
+    <div id="privateChatForm">
+        <div class="form-group"><label>Select Crew Member</label></div>
+        <div class="crew-select-list" id="crewSelectList"></div>
+    </div>
+    <div id="groupChatForm" class="hidden">
+        <div class="form-group"><label>Group Name *</label><input type="text" id="groupName" placeholder="e.g., Production Team"></div>
+        <div class="form-group"><label>Select Members</label></div>
+        <div class="crew-select-list" id="groupMembersList"></div>
+        <button class="submit-btn" id="createGroupBtn" onclick="createGroupChat()"><i class="fas fa-users"></i> Create Group</button>
+    </div></div></div>
 
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-spinner"></div>
-    </div>
+    <!-- Chat Info Modal -->
+    <div class="modal" id="chatInfoModal"><div class="modal-content"><div class="modal-header"><h2>Chat Info</h2><button class="close-modal">&times;</button></div>
+    <div id="chatInfoContent"></div></div></div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMessage">Success!</span></div>
+
+    <!-- Loading -->
+    <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
 
     <script src="app.js"></script>
 </body>
