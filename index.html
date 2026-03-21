@@ -33,11 +33,32 @@
                     <i class="fas fa-film"></i>
                     <span>CINEMAX</span>
                 </div>
-                <button class="menu-btn" id="menuBtn">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <div class="header-actions">
+                    <button class="search-btn" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="menu-btn" id="menuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
             </div>
         </header>
+
+        <!-- Search Overlay -->
+        <div class="search-overlay" id="searchOverlay">
+            <div class="search-container">
+                <div class="search-header">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search projects, tasks, crew...">
+                    </div>
+                    <button class="close-search" id="closeSearch">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+        </div>
 
         <!-- Side Menu -->
         <div class="side-menu" id="sideMenu">
@@ -57,26 +78,44 @@
             </div>
             <nav class="menu-nav">
                 <a href="#" class="menu-item active" data-page="dashboard">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
+                    <i class="fas fa-home"></i><span>Dashboard</span>
                 </a>
                 <a href="#" class="menu-item" data-page="projects">
-                    <i class="fas fa-video"></i>
-                    <span>Projects</span>
+                    <i class="fas fa-video"></i><span>Projects</span>
                 </a>
                 <a href="#" class="menu-item" data-page="tasks">
-                    <i class="fas fa-tasks"></i>
-                    <span>Workflows</span>
+                    <i class="fas fa-tasks"></i><span>Workflows</span>
                 </a>
-                <a href="#" class="menu-item" data-page="notepad">
-                    <i class="fas fa-sticky-note"></i>
-                    <span>Notepad</span>
+                <a href="#" class="menu-item" data-page="schedule">
+                    <i class="fas fa-calendar-alt"></i><span>Schedule</span>
+                </a>
+                <a href="#" class="menu-item" data-page="locations">
+                    <i class="fas fa-map-marker-alt"></i><span>Locations</span>
+                </a>
+                <a href="#" class="menu-item" data-page="budget">
+                    <i class="fas fa-wallet"></i><span>Budget</span>
+                </a>
+                <a href="#" class="menu-item" data-page="equipment">
+                    <i class="fas fa-camera"></i><span>Equipment</span>
                 </a>
                 <a href="#" class="menu-item" data-page="crew">
-                    <i class="fas fa-users"></i>
-                    <span>Crew</span>
+                    <i class="fas fa-users"></i><span>Crew</span>
+                </a>
+                <a href="#" class="menu-item" data-page="notepad">
+                    <i class="fas fa-sticky-note"></i><span>Notepad</span>
+                </a>
+                <a href="#" class="menu-item" data-page="announcements">
+                    <i class="fas fa-bullhorn"></i><span>Announcements</span>
+                </a>
+                <a href="#" class="menu-item" data-page="analytics">
+                    <i class="fas fa-chart-bar"></i><span>Analytics</span>
                 </a>
             </nav>
+            <div class="menu-footer">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i><span>Dark Mode</span>
+                </button>
+            </div>
         </div>
         <div class="menu-overlay" id="menuOverlay"></div>
 
@@ -86,55 +125,74 @@
             <section class="page active" id="dashboard">
                 <div class="page-header">
                     <h1>Dashboard</h1>
-                    <p>Welcome back, Crew!</p>
+                    <p id="currentDate"></p>
                 </div>
+
+                <!-- Announcements Banner -->
+                <div class="announcements-banner" id="announcementsBanner"></div>
                 
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon projects">
-                            <i class="fas fa-video"></i>
-                        </div>
+                    <div class="stat-card" onclick="navigateToPage('projects')">
+                        <div class="stat-icon projects"><i class="fas fa-video"></i></div>
                         <div class="stat-info">
                             <h3 id="totalProjects">0</h3>
                             <p>Projects</p>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon tasks">
-                            <i class="fas fa-tasks"></i>
-                        </div>
+                    <div class="stat-card" onclick="navigateToPage('tasks')">
+                        <div class="stat-icon tasks"><i class="fas fa-tasks"></i></div>
                         <div class="stat-info">
                             <h3 id="pendingTasks">0</h3>
                             <p>Pending Tasks</p>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon crew">
-                            <i class="fas fa-users"></i>
-                        </div>
+                    <div class="stat-card" onclick="navigateToPage('schedule')">
+                        <div class="stat-icon schedule"><i class="fas fa-calendar"></i></div>
                         <div class="stat-info">
-                            <h3 id="totalCrew">0</h3>
-                            <p>Crew Members</p>
+                            <h3 id="upcomingSchedules">0</h3>
+                            <p>Upcoming Shoots</p>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon notes">
-                            <i class="fas fa-sticky-note"></i>
-                        </div>
+                    <div class="stat-card" onclick="navigateToPage('budget')">
+                        <div class="stat-icon budget"><i class="fas fa-wallet"></i></div>
                         <div class="stat-info">
-                            <h3 id="totalNotes">0</h3>
-                            <p>Notes</p>
+                            <h3 id="totalBudget">₹0</h3>
+                            <p>Total Budget</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="quick-action-btn" onclick="quickAddProject()">
+                        <i class="fas fa-plus"></i> Project
+                    </button>
+                    <button class="quick-action-btn" onclick="quickAddTask()">
+                        <i class="fas fa-plus"></i> Task
+                    </button>
+                    <button class="quick-action-btn" onclick="quickAddSchedule()">
+                        <i class="fas fa-plus"></i> Schedule
+                    </button>
+                    <button class="quick-action-btn" onclick="quickAddNote()">
+                        <i class="fas fa-plus"></i> Note
+                    </button>
+                </div>
+
+                <div class="section-header">
+                    <h2>Today's Schedule</h2>
+                    <a href="#" onclick="navigateToPage('schedule')">View All</a>
+                </div>
+                <div class="schedule-list" id="todayScheduleList"></div>
+
                 <div class="section-header">
                     <h2>Active Projects</h2>
+                    <a href="#" onclick="navigateToPage('projects')">View All</a>
                 </div>
                 <div class="projects-list" id="activeProjectsList"></div>
 
                 <div class="section-header">
-                    <h2>Recent Tasks</h2>
+                    <h2>Pending Tasks</h2>
+                    <a href="#" onclick="navigateToPage('tasks')">View All</a>
                 </div>
                 <div class="tasks-list" id="recentTasksList"></div>
             </section>
@@ -143,9 +201,7 @@
             <section class="page" id="projects">
                 <div class="page-header">
                     <h1>Projects</h1>
-                    <button class="add-btn" id="addProjectBtn">
-                        <i class="fas fa-plus"></i>
-                    </button>
+                    <button class="add-btn" id="addProjectBtn"><i class="fas fa-plus"></i></button>
                 </div>
                 
                 <div class="filter-tabs">
@@ -159,80 +215,254 @@
                 <div class="projects-grid" id="projectsGrid"></div>
             </section>
 
-            <!-- Tasks/Workflows Page -->
+            <!-- Tasks Page -->
             <section class="page" id="tasks">
                 <div class="page-header">
                     <h1>Workflows</h1>
-                    <button class="add-btn" id="addTaskBtn">
-                        <i class="fas fa-plus"></i>
-                    </button>
+                    <button class="add-btn" id="addTaskBtn"><i class="fas fa-plus"></i></button>
                 </div>
 
-                <div class="project-selector">
-                    <select id="taskProjectFilter">
+                <div class="filter-row">
+                    <select id="taskProjectFilter" class="filter-select">
                         <option value="">All Projects</option>
+                    </select>
+                    <select id="taskPriorityFilter" class="filter-select">
+                        <option value="">All Priority</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
                     </select>
                 </div>
 
                 <div class="tasks-container" id="tasksContainer"></div>
             </section>
 
-            <!-- Notepad Page -->
-            <section class="page" id="notepad">
+            <!-- Schedule Page -->
+            <section class="page" id="schedule">
                 <div class="page-header">
-                    <h1>Notepad</h1>
-                    <button class="add-btn" id="addNoteBtn">
-                        <i class="fas fa-plus"></i>
-                    </button>
+                    <h1>Schedule</h1>
+                    <button class="add-btn" id="addScheduleBtn"><i class="fas fa-plus"></i></button>
                 </div>
 
-                <div class="project-selector">
-                    <select id="noteProjectFilter">
-                        <option value="">General Notes</option>
+                <div class="calendar-nav">
+                    <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                    <h3 id="currentMonth">January 2024</h3>
+                    <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                </div>
+
+                <div class="calendar-grid" id="calendarGrid"></div>
+
+                <div class="section-header">
+                    <h2>Upcoming Shoots</h2>
+                </div>
+                <div class="schedule-container" id="scheduleContainer"></div>
+            </section>
+
+            <!-- Locations Page -->
+            <section class="page" id="locations">
+                <div class="page-header">
+                    <h1>Locations</h1>
+                    <button class="add-btn" id="addLocationBtn"><i class="fas fa-plus"></i></button>
+                </div>
+                <div class="locations-grid" id="locationsGrid"></div>
+            </section>
+
+            <!-- Budget Page -->
+            <section class="page" id="budget">
+                <div class="page-header">
+                    <h1>Budget</h1>
+                    <button class="add-btn" id="addBudgetBtn"><i class="fas fa-plus"></i></button>
+                </div>
+
+                <div class="budget-summary">
+                    <div class="budget-card income">
+                        <i class="fas fa-arrow-down"></i>
+                        <div>
+                            <p>Income</p>
+                            <h3 id="totalIncome">₹0</h3>
+                        </div>
+                    </div>
+                    <div class="budget-card expense">
+                        <i class="fas fa-arrow-up"></i>
+                        <div>
+                            <p>Expenses</p>
+                            <h3 id="totalExpenses">₹0</h3>
+                        </div>
+                    </div>
+                    <div class="budget-card balance">
+                        <i class="fas fa-balance-scale"></i>
+                        <div>
+                            <p>Balance</p>
+                            <h3 id="netBalance">₹0</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-row">
+                    <select id="budgetProjectFilter" class="filter-select">
+                        <option value="">All Projects</option>
+                    </select>
+                    <select id="budgetTypeFilter" class="filter-select">
+                        <option value="">All Types</option>
+                        <option value="Income">Income</option>
+                        <option value="Expense">Expense</option>
                     </select>
                 </div>
 
-                <div class="notepad-container" id="notepadContainer"></div>
+                <div class="budget-list" id="budgetList"></div>
+            </section>
+
+            <!-- Equipment Page -->
+            <section class="page" id="equipment">
+                <div class="page-header">
+                    <h1>Equipment</h1>
+                    <button class="add-btn" id="addEquipmentBtn"><i class="fas fa-plus"></i></button>
+                </div>
+
+                <div class="equipment-stats">
+                    <div class="equip-stat">
+                        <span id="totalEquipment">0</span>
+                        <p>Total Items</p>
+                    </div>
+                    <div class="equip-stat">
+                        <span id="packedEquipment">0</span>
+                        <p>Packed</p>
+                    </div>
+                    <div class="equip-stat">
+                        <span id="availableEquipment">0</span>
+                        <p>Available</p>
+                    </div>
+                </div>
+
+                <div class="filter-tabs equipment-tabs">
+                    <button class="filter-tab active" data-eqfilter="all">All</button>
+                    <button class="filter-tab" data-eqfilter="Camera">Camera</button>
+                    <button class="filter-tab" data-eqfilter="Lighting">Lighting</button>
+                    <button class="filter-tab" data-eqfilter="Audio">Audio</button>
+                    <button class="filter-tab" data-eqfilter="Grip">Grip</button>
+                    <button class="filter-tab" data-eqfilter="Other">Other</button>
+                </div>
+
+                <div class="equipment-grid" id="equipmentGrid"></div>
             </section>
 
             <!-- Crew Page -->
             <section class="page" id="crew">
                 <div class="page-header">
                     <h1>Crew</h1>
-                    <button class="add-btn" id="addCrewBtn">
-                        <i class="fas fa-plus"></i>
-                    </button>
+                    <button class="add-btn" id="addCrewBtn"><i class="fas fa-plus"></i></button>
+                </div>
+
+                <div class="crew-stats">
+                    <div class="crew-stat-item">
+                        <span id="totalCrewCount">0</span>
+                        <p>Total Members</p>
+                    </div>
+                    <div class="crew-stat-item">
+                        <span id="availableCrewCount">0</span>
+                        <p>Available</p>
+                    </div>
                 </div>
 
                 <div class="crew-grid" id="crewGrid"></div>
+            </section>
+
+            <!-- Notepad Page -->
+            <section class="page" id="notepad">
+                <div class="page-header">
+                    <h1>Notepad</h1>
+                    <button class="add-btn" id="addNoteBtn"><i class="fas fa-plus"></i></button>
+                </div>
+
+                <div class="filter-row">
+                    <select id="noteProjectFilter" class="filter-select">
+                        <option value="">All Notes</option>
+                    </select>
+                </div>
+
+                <div class="notepad-container" id="notepadContainer"></div>
+            </section>
+
+            <!-- Announcements Page -->
+            <section class="page" id="announcements">
+                <div class="page-header">
+                    <h1>Announcements</h1>
+                    <button class="add-btn" id="addAnnouncementBtn"><i class="fas fa-plus"></i></button>
+                </div>
+                <div class="announcements-list" id="announcementsList"></div>
+            </section>
+
+            <!-- Analytics Page -->
+            <section class="page" id="analytics">
+                <div class="page-header">
+                    <h1>Analytics</h1>
+                    <button class="refresh-btn" onclick="loadAnalytics()"><i class="fas fa-sync-alt"></i></button>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>Project Status</h3>
+                        <div class="chart-container" id="projectStatusChart"></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Task Completion</h3>
+                        <div class="progress-ring-container">
+                            <div class="progress-ring" id="taskProgressRing">
+                                <span id="taskProgressPercent">0%</span>
+                            </div>
+                            <p>Tasks Completed</p>
+                        </div>
+                    </div>
+                    <div class="analytics-card full-width">
+                        <h3>Budget Breakdown</h3>
+                        <div class="budget-breakdown" id="budgetBreakdown"></div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Quick Stats</h3>
+                        <div class="quick-stats">
+                            <div class="quick-stat-item">
+                                <span id="analyticsProjects">0</span>
+                                <p>Total Projects</p>
+                            </div>
+                            <div class="quick-stat-item">
+                                <span id="analyticsCompleted">0</span>
+                                <p>Completed</p>
+                            </div>
+                            <div class="quick-stat-item">
+                                <span id="analyticsCrew">0</span>
+                                <p>Crew Members</p>
+                            </div>
+                            <div class="quick-stat-item">
+                                <span id="analyticsSchedules">0</span>
+                                <p>Upcoming Shoots</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </main>
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <a href="#" class="nav-item active" data-page="dashboard">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
+                <i class="fas fa-home"></i><span>Home</span>
             </a>
             <a href="#" class="nav-item" data-page="projects">
-                <i class="fas fa-video"></i>
-                <span>Projects</span>
+                <i class="fas fa-video"></i><span>Projects</span>
             </a>
-            <a href="#" class="nav-item" data-page="tasks">
-                <i class="fas fa-tasks"></i>
-                <span>Tasks</span>
+            <a href="#" class="nav-item" data-page="schedule">
+                <i class="fas fa-calendar"></i><span>Schedule</span>
             </a>
-            <a href="#" class="nav-item" data-page="notepad">
-                <i class="fas fa-sticky-note"></i>
-                <span>Notes</span>
+            <a href="#" class="nav-item" data-page="budget">
+                <i class="fas fa-wallet"></i><span>Budget</span>
             </a>
             <a href="#" class="nav-item" data-page="crew">
-                <i class="fas fa-users"></i>
-                <span>Crew</span>
+                <i class="fas fa-users"></i><span>Crew</span>
             </a>
         </nav>
     </div>
 
+    <!-- MODALS -->
     <!-- Project Modal -->
     <div class="modal" id="projectModal">
         <div class="modal-content">
@@ -243,33 +473,54 @@
             <form id="projectForm">
                 <input type="hidden" id="projectId">
                 <div class="form-group">
-                    <label>Project Name</label>
+                    <label>Project Name *</label>
                     <input type="text" id="projectName" required placeholder="Enter project name">
                 </div>
                 <div class="form-group">
-                    <label>Director</label>
+                    <label>Director *</label>
                     <input type="text" id="projectDirector" required placeholder="Director name">
                 </div>
-                <div class="form-group">
-                    <label>Status</label>
-                    <select id="projectStatus">
-                        <option value="Pre-Production">Pre-Production</option>
-                        <option value="Production">Production</option>
-                        <option value="Post-Production">Post-Production</option>
-                        <option value="Completed">Completed</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="projectCategory">
+                            <option value="Short Film">Short Film</option>
+                            <option value="Music Video">Music Video</option>
+                            <option value="Documentary">Documentary</option>
+                            <option value="Commercial">Commercial</option>
+                            <option value="Web Series">Web Series</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="projectStatus">
+                            <option value="Pre-Production">Pre-Production</option>
+                            <option value="Production">Production</option>
+                            <option value="Post-Production">Post-Production</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" id="projectStartDate">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" id="projectEndDate">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>Start Date</label>
-                    <input type="date" id="projectStartDate">
+                    <label>Budget (₹)</label>
+                    <input type="number" id="projectBudget" placeholder="0">
                 </div>
                 <div class="form-group">
-                    <label>End Date</label>
-                    <input type="date" id="projectEndDate">
+                    <label>Description</label>
+                    <textarea id="projectDescription" placeholder="Project description..." rows="3"></textarea>
                 </div>
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-save"></i> Save Project
-                </button>
+                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save Project</button>
             </form>
         </div>
     </div>
@@ -284,28 +535,299 @@
             <form id="taskForm">
                 <input type="hidden" id="taskId">
                 <div class="form-group">
-                    <label>Project</label>
-                    <select id="taskProject" required>
-                        <option value="">Select Project</option>
-                    </select>
+                    <label>Project *</label>
+                    <select id="taskProject" required></select>
                 </div>
                 <div class="form-group">
-                    <label>Task Name</label>
+                    <label>Task Name *</label>
                     <input type="text" id="taskName" required placeholder="Enter task name">
                 </div>
-                <div class="form-group">
-                    <label>Assigned To</label>
-                    <select id="taskAssignedTo">
-                        <option value="">Select Crew Member</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Assigned To</label>
+                        <select id="taskAssignedTo"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select id="taskPriority">
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Due Date</label>
                     <input type="date" id="taskDueDate">
                 </div>
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-save"></i> Save Task
-                </button>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="taskDescription" placeholder="Task details..." rows="3"></textarea>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save Task</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Schedule Modal -->
+    <div class="modal" id="scheduleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="scheduleModalTitle">Add Schedule</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="scheduleForm">
+                <input type="hidden" id="scheduleId">
+                <div class="form-group">
+                    <label>Project *</label>
+                    <select id="scheduleProject" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" id="scheduleTitle" required placeholder="e.g., Scene 1 Shoot">
+                </div>
+                <div class="form-group">
+                    <label>Date *</label>
+                    <input type="date" id="scheduleDate" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Time</label>
+                        <input type="time" id="scheduleStartTime">
+                    </div>
+                    <div class="form-group">
+                        <label>End Time</label>
+                        <input type="time" id="scheduleEndTime">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <select id="scheduleLocation"></select>
+                </div>
+                <div class="form-group">
+                    <label>Crew Assigned</label>
+                    <input type="text" id="scheduleCrewAssigned" placeholder="e.g., John, Mike, Sarah">
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="scheduleNotes" placeholder="Additional notes..." rows="3"></textarea>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save Schedule</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Location Modal -->
+    <div class="modal" id="locationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="locationModalTitle">Add Location</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="locationForm">
+                <input type="hidden" id="locationId">
+                <div class="form-group">
+                    <label>Location Name *</label>
+                    <input type="text" id="locationName" required placeholder="e.g., City Mall">
+                </div>
+                <div class="form-group">
+                    <label>Address *</label>
+                    <textarea id="locationAddress" required placeholder="Full address..." rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Google Maps Link</label>
+                    <input type="url" id="locationGoogleMaps" placeholder="https://maps.google.com/...">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Contact Person</label>
+                        <input type="text" id="locationContactPerson" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Phone</label>
+                        <input type="tel" id="locationContactPhone" placeholder="Phone">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="locationNotes" placeholder="Parking info, permissions, etc..." rows="3"></textarea>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save Location</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Budget Modal -->
+    <div class="modal" id="budgetModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="budgetModalTitle">Add Budget Item</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="budgetForm">
+                <input type="hidden" id="budgetId">
+                <div class="form-group">
+                    <label>Project *</label>
+                    <select id="budgetProject" required></select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Type *</label>
+                        <select id="budgetType" required>
+                            <option value="Expense">Expense</option>
+                            <option value="Income">Income</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select id="budgetCategory" required>
+                            <option value="Equipment">Equipment</option>
+                            <option value="Location">Location</option>
+                            <option value="Crew">Crew Payment</option>
+                            <option value="Food">Food & Catering</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Props">Props & Costumes</option>
+                            <option value="Post-Production">Post-Production</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Sponsorship">Sponsorship</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description *</label>
+                    <input type="text" id="budgetDescription" required placeholder="e.g., Camera rental">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Amount (₹) *</label>
+                        <input type="number" id="budgetAmount" required placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="budgetDate">
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Equipment Modal -->
+    <div class="modal" id="equipmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="equipmentModalTitle">Add Equipment</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="equipmentForm">
+                <input type="hidden" id="equipmentId">
+                <div class="form-group">
+                    <label>Equipment Name *</label>
+                    <input type="text" id="equipmentName" required placeholder="e.g., Canon R5">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select id="equipmentCategory" required>
+                            <option value="Camera">Camera</option>
+                            <option value="Lighting">Lighting</option>
+                            <option value="Audio">Audio</option>
+                            <option value="Grip">Grip</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Condition</label>
+                        <select id="equipmentCondition">
+                            <option value="Excellent">Excellent</option>
+                            <option value="Good" selected>Good</option>
+                            <option value="Fair">Fair</option>
+                            <option value="Needs Repair">Needs Repair</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Assigned To Project</label>
+                    <select id="equipmentProject"></select>
+                </div>
+                <div class="form-group">
+                    <label>Assigned To Person</label>
+                    <select id="equipmentAssignedTo"></select>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save Equipment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Crew Modal -->
+    <div class="modal" id="crewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="crewModalTitle">Add Crew Member</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="crewForm">
+                <input type="hidden" id="crewId">
+                <div class="form-group">
+                    <label>Name *</label>
+                    <input type="text" id="crewName" required placeholder="Full name">
+                </div>
+                <div class="form-group">
+                    <label>Role *</label>
+                    <select id="crewRole" required>
+                        <option value="Director">Director</option>
+                        <option value="Producer">Producer</option>
+                        <option value="Cinematographer">Cinematographer</option>
+                        <option value="Editor">Editor</option>
+                        <option value="Sound Designer">Sound Designer</option>
+                        <option value="Writer">Writer</option>
+                        <option value="Actor">Actor</option>
+                        <option value="Production Assistant">Production Assistant</option>
+                        <option value="Gaffer">Gaffer</option>
+                        <option value="Grip">Grip</option>
+                        <option value="Makeup Artist">Makeup Artist</option>
+                        <option value="Art Director">Art Director</option>
+                        <option value="VFX Artist">VFX Artist</option>
+                        <option value="Colorist">Colorist</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="crewPhone" placeholder="Phone number">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="crewEmail" placeholder="Email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Skills</label>
+                    <input type="text" id="crewSkills" placeholder="e.g., Editing, VFX, Color Grading">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Availability</label>
+                        <select id="crewAvailability">
+                            <option value="Available">Available</option>
+                            <option value="Busy">Busy</option>
+                            <option value="On Leave">On Leave</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Rating</label>
+                        <select id="crewRating">
+                            <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+                            <option value="4">⭐⭐⭐⭐ (4)</option>
+                            <option value="3">⭐⭐⭐ (3)</option>
+                            <option value="2">⭐⭐ (2)</option>
+                            <option value="1">⭐ (1)</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save</button>
             </form>
         </div>
     </div>
@@ -320,54 +842,42 @@
             <form id="noteForm">
                 <div class="form-group">
                     <label>Project (Optional)</label>
-                    <select id="noteProject">
-                        <option value="">General Note</option>
-                    </select>
+                    <select id="noteProject"></select>
                 </div>
                 <div class="form-group">
-                    <label>Note</label>
-                    <textarea id="noteContent" required placeholder="Write your note here..." rows="4"></textarea>
+                    <label>Note *</label>
+                    <textarea id="noteContent" required placeholder="Write your note here..." rows="5"></textarea>
                 </div>
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-save"></i> Save Note
-                </button>
+                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Save Note</button>
             </form>
         </div>
     </div>
 
-    <!-- Crew Modal -->
-    <div class="modal" id="crewModal">
+    <!-- Announcement Modal -->
+    <div class="modal" id="announcementModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Add Crew Member</h2>
+                <h2>New Announcement</h2>
                 <button class="close-modal">&times;</button>
             </div>
-            <form id="crewForm">
+            <form id="announcementForm">
                 <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" id="crewName" required placeholder="Full name">
+                    <label>Title *</label>
+                    <input type="text" id="announcementTitle" required placeholder="Announcement title">
                 </div>
                 <div class="form-group">
-                    <label>Role</label>
-                    <select id="crewRole">
-                        <option value="Director">Director</option>
-                        <option value="Producer">Producer</option>
-                        <option value="Cinematographer">Cinematographer</option>
-                        <option value="Editor">Editor</option>
-                        <option value="Sound Designer">Sound Designer</option>
-                        <option value="Writer">Writer</option>
-                        <option value="Actor">Actor</option>
-                        <option value="Production Assistant">Production Assistant</option>
-                        <option value="Other">Other</option>
+                    <label>Message *</label>
+                    <textarea id="announcementMessage" required placeholder="Your message..." rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Priority</label>
+                    <select id="announcementPriority">
+                        <option value="Normal">Normal</option>
+                        <option value="Important">Important</option>
+                        <option value="Urgent">Urgent</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Phone</label>
-                    <input type="tel" id="crewPhone" placeholder="Phone number">
-                </div>
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-save"></i> Save
-                </button>
+                <button type="submit" class="submit-btn"><i class="fas fa-bullhorn"></i> Post Announcement</button>
             </form>
         </div>
     </div>
